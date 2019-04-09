@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1554809602 source:/home/jaime/git_workspace/Columns/Columns/main.cpp
+	"Juego.h"
+
+1554809712 /home/jaime/git_workspace/Columns/Columns/include/Juego.h
+	<sstream>
+	<iostream>
+	<SFML/Graphics.hpp>
+
+1554809750 source:/home/jaime/git_workspace/Columns/Columns/src/Juego.cpp
+	"Juego.h"
+
