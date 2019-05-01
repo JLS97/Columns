@@ -1,34 +1,14 @@
-#ifndef PIEZA_HPP
-#define PIEZA_HPP
-
-#include <iostream>
-#include <SFML/Graphics.hpp>
-
-class Pieza{
-public:
-    Pieza(sf::Vector2f size);
-
-    ~Pieza();
+#ifndef PIEZA_H
+#define PIEZA_H
 
 
-    int getRight();
-
-    int getLeft();
-
-    int getTop();
-
-    int getBottom();
-
-    int getDmg();
-
-    void draw(sf::RenderWindow &window);
-
-    void setPos(sf::Vector2f newPos);
-
-private:
-    sf::RectangleShape sprite_Pieza;
-
-
+class Pieza
+{
+    public:
+        Pieza();
+        virtual ~Pieza();
+    protected:
+    private:
 };
 
-#endif /* NEWFILE_HPP */
+#endif // PIEZA_H

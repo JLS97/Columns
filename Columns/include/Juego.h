@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Pieza.h"
+#include "Mapa.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ class Juego
     void crearVentana();
     void crearPieza();
     void bucleJuego();
+    void crearMapa();
 
 
     int right = 600;
@@ -42,6 +44,7 @@ class Juego
     Juego();
     static Juego* unica_instancia;
     Pieza* pieza;
+    Mapa* mapa;
 
 
 };

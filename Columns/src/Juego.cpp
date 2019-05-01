@@ -13,14 +13,19 @@ Juego::~Juego()
 }
 
 void Juego::crearPieza(){
-    pieza = new Pieza(sf::Vector2f(50,50));
+    pieza = new Pieza();
     cout << "Pieza Creada" << endl;
 }
+void Juego::crearMapa(){
+    mapa = new Mapa();
+}
+
 void Juego::crearVentana(){
-	window.create(sf::VideoMode(400, 600), "Columns");
+	window.create(sf::VideoMode(320, 480), "Columns");
     window.setKeyRepeatEnabled(true);
     cout << "VENTANA" << endl;
 }
+
 void Juego::bucleJuego(){
 
 	while (window.isOpen())
@@ -46,13 +51,19 @@ void Juego::bucleJuego(){
                     break;
             }
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-
-            }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+            //se mueve la pieza a la izquierda
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            {
 
             }
+            //se mueve la pieza a la derecha
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            {
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+            }
+            //se rota la pieza
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
 
             }
 
