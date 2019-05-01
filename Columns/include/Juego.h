@@ -33,6 +33,7 @@ class Juego
     void crearPieza();
     void bucleJuego();
     void crearMapa();
+    bool check();
 
 
     int right = 600;
@@ -45,6 +46,9 @@ class Juego
     static Juego* unica_instancia;
     Pieza* pieza;
     Mapa* mapa;
+
+    Texture *Fondo=NULL;
+    Sprite  *sprite_fondo;
 
 
 };

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "Pieza.h"
+
 class Mapa
 {
     public:

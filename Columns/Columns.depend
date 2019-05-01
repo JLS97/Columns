@@ -2,28 +2,31 @@
 1556703802 source:/home/jaime/git_workspace/Columns/Columns/main.cpp
 	"Juego.h"
 
-1556703831 /home/jaime/git_workspace/Columns/Columns/include/Juego.h
+1556707004 /home/jaime/git_workspace/Columns/Columns/include/Juego.h
 	<sstream>
 	<iostream>
 	<SFML/Graphics.hpp>
 	"Pieza.h"
 	"Mapa.h"
 
-1556617481 source:/home/jaime/git_workspace/Columns/Columns/src/Juego.cpp
+1556708100 source:/home/jaime/git_workspace/Columns/Columns/src/Juego.cpp
 	"Juego.h"
 
-1556703695 /home/jaime/git_workspace/Columns/Columns/include/Pieza.h
-
-1556617494 source:/home/jaime/git_workspace/Columns/Columns/src/Pieza.cpp
+1556710331 /home/jaime/git_workspace/Columns/Columns/include/Pieza.h
+	<sstream>
 	<iostream>
+	<cstdlib>
 	<SFML/Graphics.hpp>
+
+1556708572 source:/home/jaime/git_workspace/Columns/Columns/src/Pieza.cpp
 	"Pieza.h"
 
 1556619241 source:/home/jaime/git_workspace/Columns/Columns/src/Mapa.cpp
 	"Mapa.h"
 
-1556619711 /home/jaime/git_workspace/Columns/Columns/include/Mapa.h
+1556704036 /home/jaime/git_workspace/Columns/Columns/include/Mapa.h
 	<sstream>
 	<iostream>
 	<SFML/Graphics.hpp>
+	"Pieza.h"
 
