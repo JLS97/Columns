@@ -27,6 +27,8 @@ void Juego::bucleJuego(){
 
     bool fuera = false;
 
+    bool activada = true;
+
     int dx = 0;
 
     //cargamos el fondo del juego
@@ -74,9 +76,9 @@ void Juego::bucleJuego(){
             (1+rand()%7),
     };
 
-    mapa[1][1] = ficha[0];
-    mapa[2][1] = ficha[1];
-    mapa[3][1] = ficha[2];
+    mapa[1][4] = ficha[0];
+    mapa[2][4] = ficha[1];
+    mapa[3][4] = ficha[2];
 
 
      for(int i = 0;i<M;i++)
@@ -95,6 +97,8 @@ void Juego::bucleJuego(){
 
     for(int i = 0;i<3;i++)
         cout<<ficha[i]<<endl;
+
+    bool nueva = false;
 
 	while (window.isOpen())
     {
@@ -122,24 +126,82 @@ void Juego::bucleJuego(){
             }
 
             //se mueve la pieza a la izquierda
+            //buscara la primera posicion que no sea 0 de l amatriz y sobre esta y sus dos de abajao(la pieza)
+            //se aplicara un movimiento hacia la izquierda, es decir copiara los valores en las celdas adyacentes
+            //y por ultimo borrará los valores del comienzo, dadno asi una impresion de movimiento a la izquierda
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                dx = -1;
+                bool movido = false;
+                for(int i =  0;i<M && movido==false;i++)
+                {
+                    for(int j = 0;j<N;j++)
+                    {
+                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j > 0 && i<17)
+                        {
+                            mapa[i][j-1] = mapa[i][j];
+                            mapa[i+1][j-1] = mapa[i+1][j];
+                            mapa[i+2][j-1] = mapa[i+2][j];
+
+                            mapa[i][j] = 0;
+                            mapa[i+1][j] = 0;
+                            mapa[i+2][j] = 0;
+
+                            movido = true;
+                        }
+                    }
+                }
 
             }
             //se mueve la pieza a la derecha
+            //Seguimos el mismo procedimiento que para la izquierda pero al reves, obviamente
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                dx = 1;
+                bool movido1 = false;
+                for(int i =  0;i<M && movido1==false;i++)
+                {
+                    for(int j = 0;j<N && movido1==false;j++)
+                    {
+                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j < 9 && i<17)
+                        {
+                            mapa[i][j+1] = mapa[i][j];
+                            mapa[i+1][j+1] = mapa[i+1][j];
+                            mapa[i+2][j+1] = mapa[i+2][j];
+
+                            mapa[i][j] = 0;
+                            mapa[i+1][j] = 0;
+                            mapa[i+2][j] = 0;
+
+                            movido1 = true;
+                        }
+                    }
+                }
             }
             //se rota la pieza
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
-                //rotacion();
+                if(activada)
+                {
+                    bool movido1 = false;
+                    for(int i =  0;i<M && movido1==false;i++)
+                    {
+                        for(int j = 0;j<N && movido1==false;j++)
+                        {
+                            if( mapa[i][j]!=NULL && mapa[i][j]!=0 && i<17)
+                            {
+                                //el buen ejercicio de programacion 1, Gracias Rosana
+                                int  aux = mapa[i][j];
+                                mapa[i][j] = mapa[i+1][j];
+                                mapa[i+1][j] = mapa[i+2][j];
+                                mapa[i+2][j] = aux;
+
+                                movido1 = true;
+                            }
+                        }
+                    }
+                }
             }
 
         }
-
 
         if(reloj.getElapsedTime().asMilliseconds() >= 700)
         {
@@ -159,7 +221,6 @@ void Juego::bucleJuego(){
                             mapa[i-2][j] = 0;
                             fuera = true;
                             reloj.restart();
-                            dx = 0;
                         }
                     }
                 }
@@ -167,6 +228,15 @@ void Juego::bucleJuego(){
             //reloj.restart();
         }
 
+        //Cuando ninguna de las piezas se puede mover hacia abajo entonces creamos una nueva
+        //y la  incluimos a nuestra matriz mapa, y asi sucesivamente
+        if(nueva)
+        {
+            mapa[1][3] = (1+rand()%7);
+            mapa[2][3] = (1+rand()%7);
+            mapa[3][3] = (1+rand()%7);
+            nueva = false;
+        }
 
         window.clear();
         window.draw(*sprite_fondo);
