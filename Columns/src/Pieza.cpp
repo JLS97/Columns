@@ -30,17 +30,34 @@ void Pieza::mueve()
     int pos2 = s2->getPosition().x;
     int pos3 = s3->getPosition().x;
 
-    if(pos<=100 || pos2<=100 ||pos3<=100){
         s1->move(0,0.1);
         s2->move(0,0.1);
         s3->move(0,0.1);
-    }
     cout<<s1->getPosition().x<<endl;
     cout<<s1->getPosition().y<<endl;
 /*    else if(s2->getPosition().x<=370)
         s2->move(0,0.1);
     else if(s3->getPosition().x<=370)
         s3->move(0,0.1);*/
+}
+
+bool Pieza::puedeMover()
+{
+    if(s1->getPosition().x > 330){
+        cout<<"HOLA"<<endl;
+        return false;
+    }
+    if(s2->getPosition().x > 330){
+        cout<<"HOLA"<<endl;
+        return false;
+    }
+    if(s3->getPosition().x > 330){
+        cout<<"HOLA"<<endl;
+        return false;
+    }
+    else{
+        return true;
+    }
 }
 void Pieza::creaSprite()
 {

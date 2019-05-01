@@ -17,6 +17,7 @@ class Pieza
         void creaSprite();
         void mueve();
         void rotacion();
+        bool puedeMover();
         int getIds1();
         int getIds2();
         int getIds3();

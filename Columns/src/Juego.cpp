@@ -1,18 +1,9 @@
 #include "Juego.h"
 
-const int M = 20;
-const int N = 10;
-
-struct Point
-{int x,y;} a[4], b[4];
-
-//Matriz Mapa
-int field[M][N] = {0};
-
-//direccion
-int dx = 0;
+using namespace std;
 
 Juego* Juego::unica_instancia = 0;
+
 
 Juego::Juego(){
 
@@ -23,43 +14,92 @@ Juego::~Juego()
 
 }
 
-void Juego::crearPieza(){
-    pieza = new Pieza();
-    cout << "Pieza Creada" << endl;
-}
-void Juego::crearMapa(){
-    mapa = new Mapa();
-}
 
 void Juego::crearVentana(){
 	window.create(sf::VideoMode(320, 480), "Columns");
     window.setKeyRepeatEnabled(true);
     cout << "VENTANA" << endl;
+}
+
+void Juego::bucleJuego(){
+
+    Clock reloj;
+
+    bool fuera = false;
+
+    int dx = 0;
 
     //cargamos el fondo del juego
     Fondo = new Texture();
     Fondo->loadFromFile("images/background.png");
 
-    sprite_fondo = new Sprite(*Fondo);
-}
+    f = new Texture();
+    f->loadFromFile("images/tiles.png");
 
-bool Juego::check()
-{
-   for (int i=0;i<4;i++)
-   {
-	  if (a[i].x<0 || a[i].x>=N || a[i].y>=M)
-        return 0;
-      else if (field[a[i].y][a[i].x])
-        return 0;
+    s = new Sprite(*f);
+
+    sprite_fondo = new Sprite(*Fondo);
+
+
+    //estado inicial del mapa, la posicion en 0 implica posicion vacia
+    //conforme vamos llenando el mapa se van actualizando los 0 a un numero del 1 al 7
+    //cada numero representa un color y asi podremos comprobar las colisiones y eliminar
+    int mapa[M][N] = {
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,
+    };
+
+    //Ficha inicial, se genera un numero del 1 al 7 aleatorio qeu corresponde a un color
+    int ficha[3] = {
+            (1+rand()%7),
+            (1+rand()%7),
+            (1+rand()%7),
+    };
+
+    mapa[1][1] = ficha[0];
+    mapa[2][1] = ficha[1];
+    mapa[3][1] = ficha[2];
+
+
+     for(int i = 0;i<M;i++)
+    {
+        for(int j = 0;j<N;j++)
+        {
+            cout<<mapa[i][j];
+        }
+        cout<<endl;
     }
 
-   return 1;
-}
 
-void Juego::bucleJuego(){
+    ficha[0] = (1+rand()%7);
+    ficha[1] = (1+rand()%7);
+    ficha[2] = (1+rand()%7);
+
+    for(int i = 0;i<3;i++)
+        cout<<ficha[i]<<endl;
 
 	while (window.isOpen())
     {
+
+
 
         sf::Event event;
 
@@ -84,47 +124,67 @@ void Juego::bucleJuego(){
             //se mueve la pieza a la izquierda
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
+                dx = -1;
 
             }
             //se mueve la pieza a la derecha
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-
+                dx = 1;
             }
             //se rota la pieza
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
-                pieza->rotacion();
+                //rotacion();
             }
 
         }
 
-        //--MOVIMIENTO--
-        for (int i=0;i<4;i++)
+
+        if(reloj.getElapsedTime().asMilliseconds() >= 700)
         {
-            b[i]=a[i];
-            a[i].x+=dx;
-        }
-        if(!check())
-        {
-            for (int i=0;i<4;i++)
+        fuera = false;
+    cout<<"Hola"<<endl;
+            for(int i = 0;i<M && !fuera;i++)
             {
-                a[i]=b[i];
+                cout<<"Hola2"<<endl;
+                for(int j = 0;j<N;j++)
+                {
+                    if(mapa[i][j]!=0 && i<20)
+                    {
+                        if(mapa[i+1][j]==0){
+                            mapa[i+1][j] = mapa[i][j];
+                            mapa[i][j] = mapa[i-1][j];
+                            mapa[i-1][j] = mapa[i-2][j];
+                            mapa[i-2][j] = 0;
+                            fuera = true;
+                            reloj.restart();
+                            dx = 0;
+                        }
+                    }
+                }
             }
+            //reloj.restart();
         }
-
 
 
         window.clear();
-
         window.draw(*sprite_fondo);
 
-        pieza->draw(window);
+        for(int i = 0;i<M;i++)
+        {
+            for(int j = 0;j<N;j++)
+            {
 
-        //if(pieza->getLimite()==false)
-        //{
-            pieza->mueve();
-        //}
+                if(mapa[i][j]!=0){
+                    s->setTextureRect(IntRect(mapa[i][j]*18,0,18,18));
+                    s->setPosition(j*18,i*18);
+                    s->move(28,31);
+                    window.draw(*s);
+                }
+            }
+        }
+
 
         window.display();
     }

@@ -1,24 +1,25 @@
 # depslib dependency file v1.0
-1556703802 source:/home/jaime/git_workspace/Columns/Columns/main.cpp
+1556713494 source:/home/jaime/git_workspace/Columns/Columns/main.cpp
 	"Juego.h"
 
-1556707004 /home/jaime/git_workspace/Columns/Columns/include/Juego.h
+1556715898 /home/jaime/git_workspace/Columns/Columns/include/Juego.h
 	<sstream>
 	<iostream>
+	<cstdlib>
 	<SFML/Graphics.hpp>
 	"Pieza.h"
 	"Mapa.h"
 
-1556708100 source:/home/jaime/git_workspace/Columns/Columns/src/Juego.cpp
+1556719536 source:/home/jaime/git_workspace/Columns/Columns/src/Juego.cpp
 	"Juego.h"
 
-1556710331 /home/jaime/git_workspace/Columns/Columns/include/Pieza.h
+1556713024 /home/jaime/git_workspace/Columns/Columns/include/Pieza.h
 	<sstream>
 	<iostream>
 	<cstdlib>
 	<SFML/Graphics.hpp>
 
-1556708572 source:/home/jaime/git_workspace/Columns/Columns/src/Pieza.cpp
+1556713182 source:/home/jaime/git_workspace/Columns/Columns/src/Pieza.cpp
 	"Pieza.h"
 
 1556619241 source:/home/jaime/git_workspace/Columns/Columns/src/Mapa.cpp

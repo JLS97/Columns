@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <cstdlib>
 #include <SFML/Graphics.hpp>
 
 #include "Pieza.h"
@@ -30,10 +31,7 @@ class Juego
 
     int estado = 1;
     void crearVentana();
-    void crearPieza();
     void bucleJuego();
-    void crearMapa();
-    bool check();
 
 
     int right = 600;
@@ -44,13 +42,16 @@ class Juego
     private:
     Juego();
     static Juego* unica_instancia;
-    Pieza* pieza;
-    Mapa* mapa;
+
+    //Mapa* mapa;
 
     Texture *Fondo=NULL;
     Sprite  *sprite_fondo;
 
-
+    Texture *f=NULL;
+    Sprite  *s;
+    const int M = 20;
+    const int N = 10;
 };
 
 #endif
