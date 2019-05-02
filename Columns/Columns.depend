@@ -31,3 +31,26 @@
 	<SFML/Graphics.hpp>
 	"Pieza.h"
 
+1556827017 source:/home/jaime/Escritorio/gitHere/Columns/Columns/main.cpp
+	"Juego.h"
+
+1556827307 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Juego.h
+	<sstream>
+	<iostream>
+	<cstdlib>
+	<SFML/Graphics.hpp>
+	"Pieza.h"
+	"Mapa.h"
+
+1556827017 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Pieza.h
+	<sstream>
+	<iostream>
+	<cstdlib>
+	<SFML/Graphics.hpp>
+
+1556827017 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Mapa.h
+	<sstream>
+	<iostream>
+	<SFML/Graphics.hpp>
+	"Pieza.h"
+

@@ -13,8 +13,8 @@ using namespace std;
 
 class Juego
 {
-	public:
-	~Juego(void);
+    public:
+    ~Juego(void);
     static Juego *getInstance()
     {
         if(unica_instancia == 0)
@@ -46,7 +46,14 @@ class Juego
     //Mapa* mapa;
 
     Texture *Fondo=NULL;
+    Texture *Fondo2=NULL;
+    Texture *F=NULL;
+    Texture *PressF=NULL;
+
     Sprite  *sprite_fondo;
+    Sprite  *sprite_fondo2;
+    Sprite  *sprite_F;
+    Sprite  *sprite_pressF;
 
     Texture *f=NULL;
     Sprite  *s;

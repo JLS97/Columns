@@ -2,6 +2,9 @@
 
 using namespace std;
 
+
+//en realidad esto sobra porque estoy tratando la clase juego como si fuese todo un main
+//simplemente está puesto porque comence el proyecto tomando como plantilla el proyecto grupal
 Juego* Juego::unica_instancia = 0;
 
 
@@ -16,7 +19,7 @@ Juego::~Juego()
 
 
 void Juego::crearVentana(){
-	window.create(sf::VideoMode(320, 480), "Columns");
+	window.create(sf::VideoMode(600, 480), "Columns");
     window.setKeyRepeatEnabled(true);
     cout << "VENTANA" << endl;
 }
@@ -24,10 +27,13 @@ void Juego::crearVentana(){
 void Juego::bucleJuego(){
 
     Clock reloj;
+    Clock reloj2;
 
     bool fuera = false;
 
     bool activada = true;
+
+    bool perdido = false;
 
     int dx = 0;
 
@@ -35,12 +41,40 @@ void Juego::bucleJuego(){
     Fondo = new Texture();
     Fondo->loadFromFile("images/background.png");
 
+    Fondo2 = new Texture();
+    Fondo2->loadFromFile("images/endgame.png");
+
+    F = new Texture();
+    F->loadFromFile("images/F.png");
+
+    PressF = new Texture();
+    PressF->loadFromFile("images/pressF.png");
+
     f = new Texture();
     f->loadFromFile("images/tiles.png");
+
 
     s = new Sprite(*f);
 
     sprite_fondo = new Sprite(*Fondo);
+
+    sprite_fondo2 = new Sprite(*Fondo2);
+
+    sprite_F = new Sprite(*F);
+
+    sprite_pressF = new Sprite(*PressF);
+
+    sprite_fondo2->setScale(0.7,0.7);
+
+    sprite_fondo2->setPosition(30,60);
+
+    sprite_F->setScale(0.25,0.25);
+
+    sprite_F->setPosition(100, 290);
+
+    sprite_pressF->setScale(0.3,0.3);
+
+    sprite_pressF->setPosition(350,300);
 
 
     //estado inicial del mapa, la posicion en 0 implica posicion vacia
@@ -76,9 +110,9 @@ void Juego::bucleJuego(){
             (1+rand()%7),
     };
 
-    mapa[1][4] = ficha[0];
-    mapa[2][4] = ficha[1];
-    mapa[3][4] = ficha[2];
+    mapa[0][2] = ficha[0];
+    mapa[1][2] = ficha[1];
+    mapa[2][2] = ficha[2];
 
 
      for(int i = 0;i<M;i++)
@@ -90,6 +124,9 @@ void Juego::bucleJuego(){
         cout<<endl;
     }
 
+    int dificultad = 600;
+
+    int puntos = 0;
 
     ficha[0] = (1+rand()%7);
     ficha[1] = (1+rand()%7);
@@ -99,6 +136,11 @@ void Juego::bucleJuego(){
         cout<<ficha[i]<<endl;
 
     bool nueva = false;
+
+    //variables para el control de una nueva pieza de 3 sprites
+    int posterior = 1;
+    int tempo = 17;
+    int vez = 0;
 
 	while (window.isOpen())
     {
@@ -136,7 +178,12 @@ void Juego::bucleJuego(){
                 {
                     for(int j = 0;j<N;j++)
                     {
-                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j > 0 && i<17)
+                        //el if mas largo del mundo
+                        //compuebo que si hay pieza o muro a la izquierda no se puede mover y que ademas
+                        //cuando hay abajo muro o pieza tampoco
+                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j > 0 && i<17
+                            && mapa[i][j-1]==0 && mapa[i+1][j-1]==0 && mapa[i+2][j-1]==0
+                            && mapa[i+3][j]==0)
                         {
                             mapa[i][j-1] = mapa[i][j];
                             mapa[i+1][j-1] = mapa[i+1][j];
@@ -161,7 +208,12 @@ void Juego::bucleJuego(){
                 {
                     for(int j = 0;j<N && movido1==false;j++)
                     {
-                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j < 9 && i<17)
+                        //el if mas largo del mundo 2
+                        //compuebo que si hay pieza o muro a la derecha no se puede mover y que ademas
+                        //cuando hay abajo muro o pieza tampoco
+                        if( mapa[i][j]!=NULL && mapa[i][j]!=0 && j < 9 && i<17
+                            && mapa[i][j+1]==0 && mapa[i+1][j+1]==0 && mapa[i+2][j+1]==0
+                            && mapa[i+3][j]==0)
                         {
                             mapa[i][j+1] = mapa[i][j];
                             mapa[i+1][j+1] = mapa[i+1][j];
@@ -182,80 +234,220 @@ void Juego::bucleJuego(){
                 if(activada)
                 {
                     bool movido1 = false;
+
                     for(int i =  0;i<M && movido1==false;i++)
                     {
-                        for(int j = 0;j<N && movido1==false;j++)
-                        {
-                            if( mapa[i][j]!=NULL && mapa[i][j]!=0 && i<17)
+                            for(int j = 0;j<N && movido1==false;j++)
                             {
-                                //el buen ejercicio de programacion 1, Gracias Rosana
-                                int  aux = mapa[i][j];
-                                mapa[i][j] = mapa[i+1][j];
-                                mapa[i+1][j] = mapa[i+2][j];
-                                mapa[i+2][j] = aux;
+                            //aqui no es el mas largo de mundo porque lo he separado
+                            //compuebo que si hay pieza o muro debajo no se puede rotar el color
+                            if(mapa[i+3][j]==0){
+                                if( mapa[i][j]!=NULL && mapa[i][j]!=0 && i<17)
+                                {
+                                    //en programacion 1 hicimos un ejercicio parecido
+                                    int  aux = mapa[i][j];
+                                    mapa[i][j] = mapa[i+1][j];
+                                    mapa[i+1][j] = mapa[i+2][j];
+                                    mapa[i+2][j] = aux;
 
-                                movido1 = true;
+                                    movido1 = true;
+                                }
                             }
                         }
                     }
                 }
             }
 
+            //en vez de un modo dios he hecho un modo diablo,
+            //si pulsas pierdes porque es imposible aguantar el ritmo
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+            {
+                puntos = 99999;
+                dificultad = 10;
+            }
+            //si pulsas F se reinicia el juego
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+            {
+                puntos = 0;
+                dificultad = 600;
+                perdido = false;
+
+                for(int i = 0; i<M;i++)
+                {
+                    for(int j = 0; j<N;j++)
+                    {
+                        mapa[i][j]=0;
+                    }
+                }
+
+                mapa[0][2] = ficha[0];
+                mapa[1][2] = ficha[1];
+                mapa[2][2] = ficha[2];
+
+            }
+
         }
 
-        if(reloj.getElapsedTime().asMilliseconds() >= 700)
+        //Recorro la matriz a la inversa para no crear conflicto a la hora de generar una nueva pieza
+        //si recorro la matriz normal solo se me creara bien la primera vez la ficha el resto de veces me da error
+        // ya que tal y como lo estoy planteando compruebo que si ninguna ficha se puede mover mas entonces la creo
+        // para que esto funcione la recorro a la inversa asi siempre terminara el bucle con la ficha que actualmente se esta moviendo
+        //mientras que si la recorro normal el bucle termina con las que ya estan paradas y claro siempre se me generara una ficha nueva
+
+
+        if(reloj.getElapsedTime().asMilliseconds() >= dificultad)
         {
-        fuera = false;
-    cout<<"Hola"<<endl;
-            for(int i = 0;i<M && !fuera;i++)
+
+            for(int i = M; i>=0;i--)
             {
-                cout<<"Hola2"<<endl;
-                for(int j = 0;j<N;j++)
+                for(int j = N; j>=0 && !fuera;j--)
                 {
-                    if(mapa[i][j]!=0 && i<20)
+                    if(mapa[i][j]!=0 && i<19)
                     {
-                        if(mapa[i+1][j]==0){
+                        if(mapa[i+1][j]==0)
+                        {
                             mapa[i+1][j] = mapa[i][j];
                             mapa[i][j] = mapa[i-1][j];
                             mapa[i-1][j] = mapa[i-2][j];
                             mapa[i-2][j] = 0;
-                            fuera = true;
                             reloj.restart();
+                            fuera = true;
+                            nueva = false;
+                        }
+                        else
+                        {
+                            nueva = true;
                         }
                     }
                 }
             }
-            //reloj.restart();
+
+            fuera = false;
+
         }
 
-        //Cuando ninguna de las piezas se puede mover hacia abajo entonces creamos una nueva
-        //y la  incluimos a nuestra matriz mapa, y asi sucesivamente
+        //si ninguna ficha tiene movimiento disponible significa que debo crear una nueva
+        // la creo y actualizo nueva a false.
+        // me volvera a entrar cuando la nueva haya colisionado
         if(nueva)
         {
-            mapa[1][3] = (1+rand()%7);
-            mapa[2][3] = (1+rand()%7);
-            mapa[3][3] = (1+rand()%7);
+            //se genera una ficha con 3 colores aleatorios
+            //ademas la ficha se coloca en una columna aleatoria
+            //el punto de spwan de la ficha no siepre es el mismo
+            //esto es algo que vi en una version de tetris y me gustó bastante, le da una jugabilidad extra
+            //al no saber donde se genera la ficha tienes que llevar cuidado al subir
+
+            //genero una columna aleatoria en la que ira la nueva ficha
+            int columna = (0+rand()%10);
+
+            //ficha en juego
+            mapa[0][columna] = ficha[0];
+            mapa[1][columna] = ficha[1];
+            mapa[2][columna] = ficha[2];
+
+            //siguiente ficha
+            //nunca he sido muy fan de mostrar la siguiente ficha en el tetris
+            //pero me gustaba la idea de implementarlo simplemente por hacer mas cosas
+            ficha[0] = (1+rand()%7);
+            ficha[1] = (1+rand()%7);
+            ficha[2] = (1+rand()%7);
+
+            //cada vez que se genera una nueva pieza te dan 10 puntos
+            //cuanto mas aguantes mas piezas se generan y mas puntos obtendras
+            puntos = puntos + 20;
+
             nueva = false;
         }
 
-        window.clear();
-        window.draw(*sprite_fondo);
 
-        for(int i = 0;i<M;i++)
+        //conforme vayas sacando mas puntos la dificultad aunmeta
+        //aumentando la velocidad de la pieza
+        if(puntos >= 200 && puntos <= 300)
         {
-            for(int j = 0;j<N;j++)
-            {
+            //este nivel aun se aguanta
+            dificultad = 300;
+        }
+        if(puntos >300 && puntos <=500)
+        {
+            //esta dificil
+            dificultad = 100;
+        }
+        if(puntos > 500 && puntos <99990)
+        {
+            dificultad = 50;
+        }
 
-                if(mapa[i][j]!=0){
-                    s->setTextureRect(IntRect(mapa[i][j]*18,0,18,18));
-                    s->setPosition(j*18,i*18);
-                    s->move(28,31);
-                    window.draw(*s);
+        //Vamos a comprobar cuando has perdido
+        //para este caso si en la fila 0 hay una o mas lineas ocupadas eso significara que has revosado la
+        //cantidad de columnas permitidas en el mapa por lo que has perdido
+        //el clasico fin de partida del tetris
+        int pierde = 0;
+        for(int i = 0;i <N;i++)
+        {
+            if(mapa[0][i]!=0)
+            {
+                pierde++;
+            }
+        }
+
+        if(pierde>1)
+        {
+            perdido = true;
+        }
+
+         window.clear(Color::Transparent);
+
+        //Cargamos los sprites de fondo, los que saldran cuando pierdas
+        if(perdido)
+        {
+            window.draw(*sprite_fondo2);
+            window.draw(*sprite_F);
+            window.draw(*sprite_pressF);
+        }
+
+        //mientras no pierdas se muestra el juego, cuando pierdes se deja de mostrar,
+        //y se muestra el mensaje de has perdido
+        if(!perdido)
+        {
+            //pongo un Transparent para luego escribir encima
+           // window.clear(Color::Transparent);
+
+            //dibujo el fondo
+            window.draw(*sprite_fondo);
+
+            //dibujo la siguiente ficha
+            s->setTextureRect(IntRect(ficha[0]*18,0,18,18));
+            s->setPosition(450,80);
+            window.draw(*s);
+            s->setTextureRect(IntRect(ficha[1]*18,0,18,18));
+            s->setPosition(450,98);
+            window.draw(*s);
+            s->setTextureRect(IntRect(ficha[2]*18,0,18,18));
+            s->setPosition(450,116);
+            window.draw(*s);
+
+            //dibujo los colores asociados a cada numero comprobando la matriz mapa
+            //si es 0 no e imprimira nada
+            //en cualquier otro caso su colo asociado
+            for(int i = 0;i<M;i++)
+            {
+                for(int j = 0;j<N;j++)
+                {
+
+                    //bueno esto en realidad no haria falta puesto que si es 0 no se dibujara nada igualmente
+                    if(mapa[i][j]!=0){
+                        s->setTextureRect(IntRect(mapa[i][j]*18,0,18,18));
+                        s->setPosition(j*18,i*18);
+                        s->move(28,31);
+                        window.draw(*s);
+                    }
                 }
             }
         }
 
 
         window.display();
+        // Ahora a seguir haciendo la grupal ;)
+        // perdona Fidel, no he hecho la interpolacion :(
     }
 }
