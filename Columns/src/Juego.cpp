@@ -1,5 +1,5 @@
 #include "Juego.h"
-
+#include <string>
 using namespace std;
 
 
@@ -35,7 +35,69 @@ void Juego::bucleJuego(){
 
     bool perdido = false;
 
-    int dx = 0;
+    //cargamos la fuente para el texto
+    Font font;
+    if(!font.loadFromFile("images/arial.ttf"))
+    {
+        std::cerr<<"Error al cargar la fuente";
+        exit(0);
+    }
+
+    //Texto de siguiente ficha
+    Text sigFicha;
+
+    sigFicha.setFont(font);
+    sigFicha.setColor(Color::White);
+    sigFicha.setCharacterSize(20);
+    sigFicha.setPosition(385,40);
+    sigFicha.setString("Siguiente Ficha:");
+
+    //Texto de controles y puntuacion
+    Text izq,der,up,down,ff,g,puntuacion,puntoss;
+
+    izq.setFont(font);
+    der.setFont(font);
+    up.setFont(font);
+    down.setFont(font);
+    ff.setFont(font);
+    g.setFont(font);
+    puntuacion.setFont(font);
+    puntoss.setFont(font);
+
+    izq.setColor(Color::White);
+    der.setColor(Color::White);
+    up.setColor(Color::White);
+    down.setColor(Color::White);
+    ff.setColor(Color::White);
+    g.setColor(Color::White);
+    puntuacion.setColor(Color::Black);
+    puntoss.setColor(Color::Black);
+
+    izq.setCharacterSize(15);
+    der.setCharacterSize(15);
+    up.setCharacterSize(15);
+    down.setCharacterSize(15);
+    ff.setCharacterSize(15);
+    g.setCharacterSize(15);
+    puntuacion.setCharacterSize(30);
+    puntoss.setCharacterSize(50);
+
+    izq.setPosition(370,180);
+    der.setPosition(370,200);
+    up.setPosition(370,220);
+    down.setPosition(370,240);
+    ff.setPosition(370,260);
+    g.setPosition(370,280);
+    puntuacion.setPosition(30,420);
+    puntoss.setPosition(215,405);
+
+    izq.setString("Left     -- Mueve izquieda");
+    der.setString("Right   -- Mueve derecha");
+    up.setString("Up        -- Rotacion de color");
+    down.setString("Down   -- Avanzar ficha");
+    ff.setString("Pulsa F para reiniciar juego");
+    g.setString("Pulsa G para activar modo Dios");
+    puntuacion.setString("Puntuacion: ");
 
     //cargamos el fondo del juego
     Fondo = new Texture();
@@ -370,7 +432,8 @@ void Juego::bucleJuego(){
 
             //cada vez que se genera una nueva pieza te dan 10 puntos
             //cuanto mas aguantes mas piezas se generan y mas puntos obtendras
-            puntos = puntos + 20;
+            puntos = puntos + 10;
+
 
             nueva = false;
 
@@ -506,6 +569,7 @@ void Juego::bucleJuego(){
         //y se muestra el mensaje de has perdido
         if(!perdido)
         {
+
             //pongo un Transparent para luego escribir encima
            // window.clear(Color::Transparent);
 
@@ -540,6 +604,22 @@ void Juego::bucleJuego(){
                     }
                 }
             }
+
+            //dibujo todos los textos
+            window.draw(sigFicha);
+            window.draw(izq);
+            window.draw(der);
+            window.draw(up);
+            window.draw(down);
+            window.draw(ff);
+            window.draw(g);
+            window.draw(puntuacion);
+            std::string cadena = "";
+
+            cadena = static_cast<std::ostringstream*>(&(std::ostringstream() << puntos))->str();
+            puntoss.setString(cadena);
+            window.draw(puntoss);
+
         }
 
 
