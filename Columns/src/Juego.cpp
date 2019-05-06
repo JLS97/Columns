@@ -110,30 +110,23 @@ void Juego::bucleJuego(){
             (1+rand()%7),
     };
 
+
+    //la primera ficha la metemos directamente al mapa
     mapa[0][2] = ficha[0];
     mapa[1][2] = ficha[1];
     mapa[2][2] = ficha[2];
 
-
-     for(int i = 0;i<M;i++)
-    {
-        for(int j = 0;j<N;j++)
-        {
-            cout<<mapa[i][j];
-        }
-        cout<<endl;
-    }
-
-    int dificultad = 600;
-
-    int puntos = 0;
-
+    //y generamos la que será la siguiente ficha
     ficha[0] = (1+rand()%7);
     ficha[1] = (1+rand()%7);
     ficha[2] = (1+rand()%7);
 
-    for(int i = 0;i<3;i++)
-        cout<<ficha[i]<<endl;
+    //dificultad del juego expresada en los milisegundos entre actualizacion de posiciond e la ficha
+    //es decir la ficha tarda 600 milisegundos en ir una posicion hacia abajo
+    //luego bajaremos la velocidad para que sea mas dificil
+    int dificultad = 600;
+
+    int puntos = 0;
 
     bool nueva = false;
 
@@ -185,6 +178,9 @@ void Juego::bucleJuego(){
                             && mapa[i][j-1]==0 && mapa[i+1][j-1]==0 && mapa[i+2][j-1]==0
                             && mapa[i+3][j]==0)
                         {
+
+                            cout<<"Mueve izquierda"<<endl;
+
                             mapa[i][j-1] = mapa[i][j];
                             mapa[i+1][j-1] = mapa[i+1][j];
                             mapa[i+2][j-1] = mapa[i+2][j];
@@ -203,6 +199,7 @@ void Juego::bucleJuego(){
             //Seguimos el mismo procedimiento que para la izquierda pero al reves, obviamente
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
+
                 bool movido1 = false;
                 for(int i =  0;i<M && movido1==false;i++)
                 {
@@ -215,6 +212,8 @@ void Juego::bucleJuego(){
                             && mapa[i][j+1]==0 && mapa[i+1][j+1]==0 && mapa[i+2][j+1]==0
                             && mapa[i+3][j]==0)
                         {
+                            cout<<"Mueve derecha"<<endl;
+
                             mapa[i][j+1] = mapa[i][j];
                             mapa[i+1][j+1] = mapa[i+1][j];
                             mapa[i+2][j+1] = mapa[i+2][j];
@@ -231,6 +230,7 @@ void Juego::bucleJuego(){
             //se rota la pieza
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
+                cout<<"Rotacion de color"<<endl;
                 if(activada)
                 {
                     bool movido1 = false;
@@ -262,12 +262,21 @@ void Juego::bucleJuego(){
             //si pulsas pierdes porque es imposible aguantar el ritmo
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::G))
             {
+                cout<<"MODO DIABLO"<<endl;
                 puntos = 99999;
                 dificultad = 10;
+            }
+
+
+            //Bajamos la ficha hasta la ultima posicion en la que puede estar
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            {
+                cout<<"Bajo ficha"<<endl;
             }
             //si pulsas F se reinicia el juego
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
             {
+                cout<<"Reinicio"<<endl;
                 puntos = 0;
                 dificultad = 600;
                 perdido = false;
@@ -284,6 +293,13 @@ void Juego::bucleJuego(){
                 mapa[1][2] = ficha[1];
                 mapa[2][2] = ficha[2];
 
+            }
+
+            //Salimos del juego "QUIT"
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+            {
+                cout<<"Salimos del juego"<<endl;
+                window.close();
             }
 
         }
@@ -357,22 +373,103 @@ void Juego::bucleJuego(){
             puntos = puntos + 20;
 
             nueva = false;
+
+            //Compuebo las colisiones horizontales
+            //recorro la matriz horizontalmente y compruebo si en una linea hay mas de dos lineas del mismo color juntas
+
+            for(int i = 0; i<M;i++)
+            {
+                for(int j = 0; j<N;j++)
+                {
+                    if(mapa[i][j]!=0)
+                    {
+                        if(mapa[i][j]==mapa[i][j+1] && mapa[i][j]==mapa[i][j+2])
+                        {
+                            if(mapa[i][j]==mapa[i][j+3])
+                            {
+                                mapa[i][j+3] = 0;
+                            }
+                            mapa[i][j] =  0;
+                            mapa[i][j+1] = 0;
+                            mapa[i][j+2] = 0;
+                        }
+                    }
+                }
+            }
+
+            //Compruebo las colisiones vertiales
+            //recorro la matriz y me voy fijando si hay 3 o 4 fichas iguales,
+            //en cuyo caso hay que actualizar sus valores a 0
+            for(int i = 0;i<M;i++)
+            {
+                for(int j = 0;j<N;j++)
+                {
+                    if(mapa[i][j]!=0)
+                    {
+                        if(mapa[i][j]==mapa[i+1][j] && mapa[i+2][j]==mapa[i][j])
+                        {
+                            if(mapa[i][j]==mapa[i+3][j])
+                            {
+                                mapa[i+3][j] = 0;
+                            }
+                            mapa[i][j]=0;
+                            mapa[i+1][j]=0;
+                            mapa[i+2][j]=0;
+                        }
+                    }
+                }
+            }
+
+            //Compueba colision cuadrado
+            //vamos a comprobar si existen fichas del mismo colo formando un cuadrado de 2x2
+            //este caso es especial ya que ni colisiones en hiruzontal ni en vertical nos lo detecta
+            //para ello seguimos las pasos anteriores pero com la comprobacion cambiada
+            //en el caso en el que existan fichar iguales formando un cuadrado as actualizamos a 0
+            //Voy a meter aqui tambien la colision en diagonal porque no me apetece hacer otro bucle
+            for(int i = 0; i<M;i++)
+            {
+                for(int j = 0;j<N;j++)
+                {
+                    if(mapa[i][j]!=0)
+                    {
+                        if(mapa[i][j]==mapa[i+1][j] && mapa[i][j]==mapa[i][j+1] && mapa[i][j]==mapa[i+1][j+1])
+                        {
+                            mapa[i][j]=0;
+                            mapa[i+1][j] = 0;
+                            mapa[i][j+1] =  0;
+                            mapa[i+1][j+1] = 0;
+                        }
+                        if(mapa[i][j]==mapa[i+1][j+1] && mapa[i][j]==mapa[i+2][j+2])
+                        {
+                            mapa[i][j] = 0;
+                            mapa[i+1][j+1] = 0;
+                            mapa[i+2][j+2] = 0;
+                        }
+                        else if(mapa[i][j]==mapa[i-1][j+1] && mapa[i][j]==mapa[i-2][j+2])
+                        {
+                            mapa[i][j] = 0;
+                            mapa[i-1][j+1] = 0;
+                            mapa[i-2][j+2] = 0;
+                        }
+                    }
+                }
+            }
         }
 
 
         //conforme vayas sacando mas puntos la dificultad aunmeta
         //aumentando la velocidad de la pieza
-        if(puntos >= 200 && puntos <= 300)
+        if(puntos >= 200 && puntos <= 500)
         {
             //este nivel aun se aguanta
             dificultad = 300;
         }
-        if(puntos >300 && puntos <=500)
+        if(puntos >500 && puntos <=800)
         {
             //esta dificil
             dificultad = 100;
         }
-        if(puntos > 500 && puntos <99990)
+        if(puntos > 800 && puntos <99990)
         {
             dificultad = 50;
         }

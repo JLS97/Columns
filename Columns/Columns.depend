@@ -54,3 +54,12 @@
 	<SFML/Graphics.hpp>
 	"Pieza.h"
 
+1556827017 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Mapa.cpp
+	"Mapa.h"
+
+1556827017 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Pieza.cpp
+	"Pieza.h"
+
+1557161241 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Juego.cpp
+	"Juego.h"
+
