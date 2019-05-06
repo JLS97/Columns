@@ -34,14 +34,12 @@
 1556827017 source:/home/jaime/Escritorio/gitHere/Columns/Columns/main.cpp
 	"Juego.h"
 
-1557165227 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Juego.h
+1557166247 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Juego.h
 	<sstream>
 	<iostream>
 	<cstdlib>
 	<SFML/Graphics.hpp>
 	<string>
-	"Pieza.h"
-	"Mapa.h"
 
 1556827017 /home/jaime/Escritorio/gitHere/Columns/Columns/include/Pieza.h
 	<sstream>
@@ -61,7 +59,7 @@
 1556827017 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Pieza.cpp
 	"Pieza.h"
 
-1557165838 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Juego.cpp
+1557165998 source:/home/jaime/Escritorio/gitHere/Columns/Columns/src/Juego.cpp
 	"Juego.h"
 	<string>
 

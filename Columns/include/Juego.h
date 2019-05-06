@@ -7,9 +7,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "Pieza.h"
-#include "Mapa.h"
 
+using namespace sf;
 using namespace std;
 
 class Juego
