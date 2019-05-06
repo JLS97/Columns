@@ -53,12 +53,11 @@ void Juego::bucleJuego(){
     sigFicha.setString("Siguiente Ficha:");
 
     //Texto de controles y puntuacion
-    Text izq,der,up,down,ff,g,puntuacion,puntoss;
+    Text izq,der,up,ff,g,puntuacion,puntoss;
 
     izq.setFont(font);
     der.setFont(font);
     up.setFont(font);
-    down.setFont(font);
     ff.setFont(font);
     g.setFont(font);
     puntuacion.setFont(font);
@@ -67,7 +66,6 @@ void Juego::bucleJuego(){
     izq.setColor(Color::White);
     der.setColor(Color::White);
     up.setColor(Color::White);
-    down.setColor(Color::White);
     ff.setColor(Color::White);
     g.setColor(Color::White);
     puntuacion.setColor(Color::Black);
@@ -76,7 +74,6 @@ void Juego::bucleJuego(){
     izq.setCharacterSize(15);
     der.setCharacterSize(15);
     up.setCharacterSize(15);
-    down.setCharacterSize(15);
     ff.setCharacterSize(15);
     g.setCharacterSize(15);
     puntuacion.setCharacterSize(30);
@@ -85,7 +82,6 @@ void Juego::bucleJuego(){
     izq.setPosition(370,180);
     der.setPosition(370,200);
     up.setPosition(370,220);
-    down.setPosition(370,240);
     ff.setPosition(370,260);
     g.setPosition(370,280);
     puntuacion.setPosition(30,420);
@@ -94,7 +90,6 @@ void Juego::bucleJuego(){
     izq.setString("Left     -- Mueve izquieda");
     der.setString("Right   -- Mueve derecha");
     up.setString("Up        -- Rotacion de color");
-    down.setString("Down   -- Avanzar ficha");
     ff.setString("Pulsa F para reiniciar juego");
     g.setString("Pulsa G para activar modo Dios");
     puntuacion.setString("Puntuacion: ");
@@ -191,11 +186,6 @@ void Juego::bucleJuego(){
     int puntos = 0;
 
     bool nueva = false;
-
-    //variables para el control de una nueva pieza de 3 sprites
-    int posterior = 1;
-    int tempo = 17;
-    int vez = 0;
 
 	while (window.isOpen())
     {
@@ -327,13 +317,6 @@ void Juego::bucleJuego(){
                 cout<<"MODO DIABLO"<<endl;
                 puntos = 99999;
                 dificultad = 10;
-            }
-
-
-            //Bajamos la ficha hasta la ultima posicion en la que puede estar
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            {
-                cout<<"Bajo ficha"<<endl;
             }
             //si pulsas F se reinicia el juego
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
@@ -610,7 +593,6 @@ void Juego::bucleJuego(){
             window.draw(izq);
             window.draw(der);
             window.draw(up);
-            window.draw(down);
             window.draw(ff);
             window.draw(g);
             window.draw(puntuacion);
