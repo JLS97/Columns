@@ -24,36 +24,13 @@ void Juego::crearVentana(){
     cout << "VENTANA" << endl;
 }
 
-void Juego::bucleJuego(){
+void Juego::cargaTextos(){
 
-    Clock reloj;
-    Clock reloj2;
-
-    bool fuera = false;
-
-    bool activada = true;
-
-    bool perdido = false;
-
-    //cargamos la fuente para el texto
-    Font font;
     if(!font.loadFromFile("images/arial.ttf"))
     {
         std::cerr<<"Error al cargar la fuente";
         exit(0);
     }
-
-    //Texto de siguiente ficha
-    Text sigFicha;
-
-    sigFicha.setFont(font);
-    sigFicha.setColor(Color::White);
-    sigFicha.setCharacterSize(20);
-    sigFicha.setPosition(385,40);
-    sigFicha.setString("Siguiente Ficha:");
-
-    //Texto de controles y puntuacion
-    Text izq,der,up,ff,g,puntuacion,puntoss;
 
     izq.setFont(font);
     der.setFont(font);
@@ -94,6 +71,25 @@ void Juego::bucleJuego(){
     g.setString("Pulsa G para activar modo Dios");
     puntuacion.setString("Puntuacion: ");
 
+    sigFicha.setFont(font);
+    sigFicha.setColor(Color::White);
+    sigFicha.setCharacterSize(20);
+    sigFicha.setPosition(385,40);
+    sigFicha.setString("Siguiente Ficha:");
+}
+
+void Juego::bucleJuego(){
+
+    Clock reloj;
+    Clock reloj2;
+
+
+    bool fuera = false;
+
+    bool activada = true;
+
+    bool perdido = false;
+
     //cargamos el fondo del juego
     Fondo = new Texture();
     Fondo->loadFromFile("images/background.png");
@@ -110,6 +106,7 @@ void Juego::bucleJuego(){
     f = new Texture();
     f->loadFromFile("images/tiles.png");
 
+    cargaTextos();
 
     s = new Sprite(*f);
 

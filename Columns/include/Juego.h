@@ -32,7 +32,7 @@ class Juego
     int estado = 1;
     void crearVentana();
     void bucleJuego();
-
+    void cargaTextos();
 
     int right = 600;
 
@@ -44,6 +44,12 @@ class Juego
     static Juego* unica_instancia;
 
     //Mapa* mapa;
+
+     //Texto de controles y puntuacion
+    Text izq,der,up,ff,g,puntuacion,puntoss;
+    //Texto de siguiente ficha
+    Text sigFicha;
+    Font font;
 
     Texture *Fondo=NULL;
     Texture *Fondo2=NULL;
